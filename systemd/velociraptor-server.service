@@ -1,0 +1,15 @@
+[Unit]
+Description=Velociraptor DFIR server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/velociraptor --config /etc/velociraptor/server.config.yaml frontend
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+KeyName,OSPath,Command
+SecurityHealth,HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\SecurityHealth,%windir%\system32\SecurityHealthSystray.exe
+VBoxTray,HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\VBoxTray,%SystemRoot%\system32\VBoxTray.exe
+LabPersist,HKEY_USERS\S-1-5-21-2809635563-2156902475-3179047609-1000\Software\Microsoft\Windows\CurrentVersion\Run\LabPersist,C:\Users\win-cli\AppData\Local\Temp\update_helper.exe
+OneDrive,HKEY_USERS\S-1-5-21-2809635563-2156902475-3179047609-1000\Software\Microsoft\Windows\CurrentVersion\Run\OneDrive,"""C:\Users\win-cli\AppData\Local\Microsoft\OneDrive\OneDrive.exe"" /background"

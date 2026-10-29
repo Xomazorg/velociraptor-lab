@@ -1,0 +1,18 @@
+﻿name: Custom.PersistenceDelta
+description: |
+  овые элементы автозапуска (ключи Run) относительно базовой линии.
+  Служебные учётные записи S-1-5-18/19/20 исключены.
+type: CLIENT
+sources:
+  - precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET baseline = SELECT Name, Command
+        FROM parse_json_array(data=read_file(filename="C:/lab/baseline_autoruns.json"))
+      LET base_names = baseline.Name
+      SELECT Name AS KeyName, OSPath, Data.value AS Command
+      FROM glob(globs=[
+        "HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/Run/*",
+        "HKEY_USERS/*/Software/Microsoft/Windows/CurrentVersion/Run/*"],
+        accessor="registry")
+      WHERE NOT KeyName IN base_names
+        AND NOT OSPath =~ "S-1-5-(18|19|20)"

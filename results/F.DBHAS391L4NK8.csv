@@ -1,0 +1,2 @@
+Pid,Process,LocalIP,RemoteIP,RemotePort,Status,Exe
+7468,powershell.exe,192.168.100.30,192.168.100.20,4444,ESTAB,C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe

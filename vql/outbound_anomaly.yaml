@@ -1,0 +1,26 @@
+﻿name: Custom.OutboundAnomaly
+description: |
+  одозрительные исходящие соединения: нетипичный порт
+  или процесс, запущенный из каталога TEMP.
+type: CLIENT
+parameters:
+  - name: SuspPorts
+    default: "4444,1337,9001,8080"
+sources:
+  - precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET bad_ports = split(string=SuspPorts, sep=",")
+      LET net = SELECT Pid,
+                       Name AS Process,
+                       `Laddr.IP` AS LocalIP,
+                       `Raddr.IP` AS RemoteIP,
+                       `Raddr.Port` AS RemotePort,
+                       Status
+                FROM Artifact.Windows.Network.Netstat()
+                WHERE Status =~ "ESTAB"
+      SELECT * FROM foreach(row=net, query={
+        SELECT Pid, Process, LocalIP, RemoteIP, RemotePort, Status, Exe
+        FROM pslist(pid=Pid)
+        WHERE str(str=RemotePort) IN bad_ports
+           OR Exe =~ "(?i)\\\\Temp\\\\"
+      })

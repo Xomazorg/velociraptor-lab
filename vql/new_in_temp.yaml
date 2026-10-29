@@ -1,0 +1,16 @@
+﻿name: Custom.NewInTemp
+description: |
+  овые исполняемые файлы в каталогах TEMP за последние N минут.
+type: CLIENT
+parameters:
+  - name: MaxAgeMinutes
+    default: "60"
+sources:
+  - precondition: SELECT OS FROM info() WHERE OS = 'windows'
+    query: |
+      LET cutoff <= timestamp(epoch=now() - atoi(string=MaxAgeMinutes) * 60)
+      SELECT OSPath, Name, Size, Mtime, Btime
+      FROM glob(globs=["C:/Users/*/AppData/Local/Temp/**", "C:/Windows/Temp/**"])
+      WHERE NOT IsDir
+        AND Name =~ "(?i)\\.(exe|dll|ps1|bat|scr)$"
+        AND Mtime > cutoff

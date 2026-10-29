@@ -1,0 +1,21 @@
+---
+- name: Установка агента Velociraptor на Linux
+  hosts: linux_clients
+  become: true
+  tasks:
+    - name: Скопировать deb-пакет агента
+      ansible.builtin.copy:
+        src: files/velociraptor_client_0.77.3_amd64.deb
+        dest: /tmp/velociraptor_client.deb
+        mode: "0644"
+
+    - name: Установить пакет
+      ansible.builtin.apt:
+        deb: /tmp/velociraptor_client.deb
+        state: present
+
+    - name: Включить и запустить службу
+      ansible.builtin.systemd:
+        name: velociraptor_client
+        enabled: true
+        state: started
