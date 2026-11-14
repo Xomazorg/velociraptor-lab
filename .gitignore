@@ -1,8 +1,0 @@
-server.config.yaml
-*.pem
-*.key
-*.7z
-*.dmp
-evidence/
-forensics_*
-ansible/inventory.ini
